@@ -167,12 +167,17 @@ class OpenId
         $this->logger->debug('Payload: ', $payload);
 
         $token = $payload['access_token'];
+        $id_token = $payload['id_token'];
         $this->config->setToken($token);
 
         # get object id from token
         $chunks = explode('.', $token);
         $payload = json_decode($this->base64UrlSafeDecode($chunks[1]), true);
         $this->config->setOid($payload['urn:esia:sbj_id']);
+
+        $chunks = explode('.', $id_token);
+        $payload = json_decode($this->base64UrlSafeDecode($chunks[1]), true);
+        $this->config->setIdentity($payload);
 
         return $token;
     }
@@ -192,6 +197,11 @@ class OpenId
 
         return $this->sendRequest(new Request('GET', $url));
     }
+
+    public function getIdentity(): array
+    {
+        return $this->config->getIdentity();
+    }    
 
     /**
      * Fetch contact info about current person
