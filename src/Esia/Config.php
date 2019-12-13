@@ -37,6 +37,7 @@ class Config
     private $accessType = 'offline';
 
     private $token = '';
+    private $identity = [];
     private $oid = '';
 
     /**
@@ -147,6 +148,16 @@ class Config
     public function setToken(string $token): void
     {
         $this->token = $token;
+    }
+
+    public function getIdentity(): ?array
+    {
+        return $this->identity;
+    }
+
+    public function setIdentity(array $identity): void
+    {
+        $this->identity = $identity;
     }
 
     public function getClientId(): string
